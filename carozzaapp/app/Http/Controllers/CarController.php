@@ -23,7 +23,7 @@ class CarController extends Controller
     public function create(){
         $findCars = new Car();
         $manufacturers = Manufacturer::OrderBy('name')->pluck('name', 'id')->prepend('All Manufacturers', '');
-        return view('cars.create', compact('manufacturers'));
+        return view('cars.create', compact('manufacturers', 'findCars'));
     }
 
     public function edit($id){
@@ -60,5 +60,11 @@ class CarController extends Controller
         $car = Car::find($id);
         $car->update($request->all());
         return redirect()->route('cars.index')->with('message', 'Car model has been edited successfully');
+    }
+
+    public function destroy($id){
+        $car = Car::find($id);
+        $car->delete();
+        return back()->with('message', 'Car has been deleted successfully');
     }
 }
